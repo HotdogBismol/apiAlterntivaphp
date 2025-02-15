@@ -3,5 +3,5 @@
 //git commit -m "Primer commit de mi API"
 //git push
 
-require 'routes.php';
+require 'rutasProducto.php';
 ?>
