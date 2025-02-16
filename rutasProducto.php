@@ -111,6 +111,7 @@ function addProducto() {
         $sql = "INSERT INTO producto (nombre, precio, foto, categoria, costo, descripcion) VALUES ('$nombre', '$precio', '$foto', '$categoria', '$costo', '$descripcion')";
         error_log("SQL: $sql"); // Registro de depuración
         if ($conn->query($sql) === TRUE) {
+            error_log("Producto añadido exitosamente"); // Registro de depuración
             echo json_encode(['message' => 'Nuevo producto añadido']);
         } else {
             error_log("Error al agregar el producto: " . $conn->error); // Registro del error
@@ -121,3 +122,4 @@ function addProducto() {
         echo json_encode(['message' => 'Faltan parámetros necesarios']);
     }
 }
+?>
