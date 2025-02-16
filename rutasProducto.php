@@ -87,13 +87,13 @@ function getProducto($id) {
 
 function addProducto() {
     global $conn;
-    $data = json_decode(file_get_contents("php://input"), true);
-    $nombre = $data['nombre'];
-    $precio = $data['precio'];
-    $foto = $data['foto'];
-    $categoria = $data['categoria'];
-    $costo = $data['costo'];
-    $descripcion = $data['descripcion'];
+    // Obtención de parámetros desde la URL
+    $nombre = $_GET['nombre'];
+    $precio = $_GET['precio'];
+    $foto = $_GET['foto'];
+    $categoria = $_GET['categoria'];
+    $costo = $_GET['costo'];
+    $descripcion = $_GET['descripcion'];
 
     $sql = "INSERT INTO producto (nombre, precio, foto, categoria, costo, descripcion) VALUES ('$nombre', '$precio', '$foto', '$categoria', '$costo', '$descripcion')";
     if ($conn->query($sql) === TRUE) {
@@ -103,7 +103,6 @@ function addProducto() {
         echo json_encode(['message' => 'Error: ' . $conn->error]);
     }
 }
-
 
 function updateProducto($id) {
     global $conn;
