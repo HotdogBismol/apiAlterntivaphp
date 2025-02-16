@@ -99,9 +99,11 @@ function addProducto() {
     if ($conn->query($sql) === TRUE) {
         echo json_encode(['message' => 'Nuevo producto añadido']);
     } else {
+        error_log("Error al agregar el producto: " . $conn->error); // Registro del error
         echo json_encode(['message' => 'Error: ' . $conn->error]);
     }
 }
+
 
 function updateProducto($id) {
     global $conn;
