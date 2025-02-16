@@ -8,32 +8,49 @@ $path = explode('/', trim($_SERVER['PATH_INFO'],'/'));
 $resource = array_shift($path);
 $id = array_shift($path);
 
+// Autenticación con Token
+$headers = apache_request_headers();
+if (isset($headers['Authorization'])) {
+    $authHeader = $headers['Authorization'];
+    list($tokenType, $token) = explode(" ", $authHeader, 2);
+
+    if ($tokenType !== 'Bearer' || $token !== $apiToken) {
+        header('HTTP/1.0 403 Forbidden');
+        echo json_encode(['message' => 'Token inválido']);
+        exit;
+    }
+} else {
+    header('HTTP/1.0 401 Unauthorized');
+    echo json_encode(['message' => 'Autenticación requerida']);
+    exit;
+}
+
 // Definiendo las rutas y métodos permitidos
 switch ($method) {
     case 'GET':
-        if ($resource == 'productos' && $id) {  
+        if ($resource == 'gProductos' && $id) {  
             getProducto($id);
         } else {
             getProductos();
         }
         break;
     case 'POST':
-        if ($resource == 'productos') {
+        if ($resource == 'pProductos') {
             addProducto();
         }
         break;
     case 'PUT':
-        if ($resource == 'productos' && $id) {
+        if ($resource == 'eProductos' && $id) {
             updateProducto($id);
         }
         break;
     case 'DELETE':
-        if ($resource == 'productos' && $id) {
+        if ($resource == 'dProductos' && $id) {
             deleteProducto($id);
         }
         break;
     case 'PATCH':
-        if ($resource == 'productos' && $id) {
+        if ($resource == 'sProductos' && $id) {
             updateStockProducto($id);
         }
         break;
