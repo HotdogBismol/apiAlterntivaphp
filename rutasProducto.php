@@ -3,6 +3,8 @@ ob_start();
 header("Content-Type: application/json");
 require 'db.php';
 
+error_log("Iniciando script"); // Registro de depuración
+
 // Obteniendo el método de la solicitud
 $method = $_SERVER['REQUEST_METHOD'];
 $path = explode('/', trim($_SERVER['PATH_INFO'],'/'));
@@ -25,6 +27,8 @@ if (isset($headers['Authorization'])) {
     echo json_encode(['message' => 'Autenticación requerida']);
     exit;
 }
+
+error_log("Método: $method, Recurso: $resource, ID: $id"); // Registro de depuración
 
 // Definiendo las rutas y métodos permitidos
 switch ($method) {
@@ -63,6 +67,7 @@ switch ($method) {
 // Funciones para cada operación
 function getProductos() {
     global $conn;
+    error_log("Ejecutando getProductos"); // Registro de depuración
     $sql = "SELECT * FROM producto";
     $result = $conn->query($sql);
 
@@ -75,6 +80,7 @@ function getProductos() {
 
 function getProducto($id) {
     global $conn;
+    error_log("Ejecutando getProducto con ID: $id"); // Registro de depuración
     $sql = "SELECT * FROM producto WHERE id=$id";
     $result = $conn->query($sql);
 
@@ -103,6 +109,7 @@ function addProducto() {
     // Verificación de parámetros
     if ($nombre && $precio && $foto && $categoria && $costo && $descripcion) {
         $sql = "INSERT INTO producto (nombre, precio, foto, categoria, costo, descripcion) VALUES ('$nombre', '$precio', '$foto', '$categoria', '$costo', '$descripcion')";
+        error_log("SQL: $sql"); // Registro de depuración
         if ($conn->query($sql) === TRUE) {
             echo json_encode(['message' => 'Nuevo producto añadido']);
         } else {
@@ -114,4 +121,3 @@ function addProducto() {
         echo json_encode(['message' => 'Faltan parámetros necesarios']);
     }
 }
-?>
